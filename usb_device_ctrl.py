@@ -107,14 +107,19 @@ def device_ctrl(**kwargs):
 
 
 # 搜索设备
-def device_search(key):
+def device_search(*args):
     devices = enum_devices(connected=True)
     search_list = []
     for d in devices:
         for v in d.values():
-            if key in v:
+            if args:
+                if args[0] in v:
+                    search_list.append(d)
+                    break
+            else:
                 search_list.append(d)
-                break
+    # search_list = subprocess.getoutput("PowerShell -Command \"& {Get-PnpDevice | Select-Object Status,Class,FriendlyName,InstanceId | ConvertTo-Json}\"")
+    # search_list = loads(search_list)
     return search_list
 
 
